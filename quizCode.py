@@ -20,14 +20,14 @@ def option1():
   # this is where the user chooses the quiz they would like to play
   option = input('''Escolha um. Escreva abaixo a letra da alternativa que você escolheu:
       ''').lower()
-  if option == "A" or "a":
+  if option == "a":
     print("Boa! Vamos começar por essa.")
     time.sleep(1)
     print("CARREGANDO AS PERGUNTAS....")
     time.sleep(3)
     easy()
   
-  elif option == "B" or "b":
+  elif option == "b":
     print('''Essa já não é tão fácil em?
     Vamos ver o que você sabe!''')
     time.sleep(1)
@@ -35,7 +35,7 @@ def option1():
     time.sleep(3)
     medium()
 
-  elif option == "C" or "c":
+  elif option == "c":
     print('''Então quer dizer que posso pegar pesado?
     Simbora!''')
     time.sleep(1)
@@ -48,14 +48,12 @@ def option1():
     time.sleep(2)
     print("Por favor escolha uma opção válida.")
     option1()
-
-
 def easy():
 # sets the score across the whole code
   global score
   score = 0
 # opens and reads the csv
-  csvfile = open('easy.csv', 'r')
+  csvfile = open('easy.csv', 'r', encoding='utf-8')
 
   lines = csv.reader(csvfile, delimiter=',')
 # prints the question and posible answers until there are no more questions
@@ -133,7 +131,7 @@ def medium():
   global score
   score = 0
   
-  csvfile = open('medium.csv', 'r')
+  csvfile = open('medium.csv', 'r', encoding='utf-8')
   
   lines = csv.reader(csvfile, delimiter=',')
 
@@ -210,7 +208,7 @@ def hard():
   global score
   score = 0
   
-  csvfile = open('minecraft quiz two.csv', 'r')
+  csvfile = open('minecraft quiz two.csv', 'r', encoding='utf-8')
   
   lines = csv.reader(csvfile, delimiter=',')  
   for q in lines:
