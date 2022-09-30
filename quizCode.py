@@ -1,5 +1,4 @@
 import csv
-from fileinput import filename
 import time
 import os
 
@@ -27,33 +26,24 @@ def start():
     time.sleep(2)
     option1()
 
+def loadQuestions(message, callback, nameCsv):
+    print(message)
+    print("CARREGANDO AS PERGUNTAS....")
+    time.sleep(3)
+    os.system("cls")
+    callback(nameCsv)
+
 # Nesta função após a escolha do usuário, ele receberá algumas mensagens e será redirecionado para as devidas funções do programa.
 def option1():
     option = int(input(''''''))
     if option == 1:
-        print("Boa! Vamos começar por essa.")
-        print("CARREGANDO AS PERGUNTAS....")
-        time.sleep(3)
-        os.system("cls")
-        easy()
+        loadQuestions("Boa! Vamos começar por essa.", questions, 'easy.csv')
 
     elif option == 2:
-        print('''Essa já não é tão fácil em?
-    Vamos ver o que você sabe!''')
-        time.sleep(1)
-        print("CARREGANDO AS PERGUNTAS....")
-        time.sleep(3)
-        os.system("cls")
-        medium()
+        loadQuestions('''Essa já não é tão fácil em? Vamos ver o que você sabe!''', questions, 'medium.csv')
 
     elif option == 3:
-        print('''Então quer dizer que posso pegar pesado?
-    Simbora!''')
-        time.sleep(1)
-        print("CARREGANDO AS PERGUNTAS....")
-        time.sleep(3)
-        os.system("cls")
-        hard()
+        loadQuestions('''Então quer dizer que posso pegar pesado? Simbora!''', questions, 'hard.csv')
 
     elif option == 4:
         os.system("cls")
@@ -74,14 +64,14 @@ def option1():
         option1()
 
 # A função easy será a qual o usuário será redirecionado quando fizer a escolha do quiz fácil.
-def easy():
+def questions(nameCsvFile):
 
     # definindo a pontuação inicial
     global score
     score = 0
     os.system("cls")
 # abrindo e lendo o arquivo csv. Além disso definimos o utf-8 para que seja permitido acentuação
-    csvfile = open('easy.csv', 'r', encoding='utf-8')
+    csvfile = open(nameCsvFile, 'r', encoding='utf-8')
     lines = csv.reader(csvfile, delimiter=',')
 # printando e formatando a saída das questões e alternativas para o usuário.
     for q in lines:
@@ -123,6 +113,7 @@ def easy():
             print("CARREGANDO....")
             time.sleep(3)
             os.system("cls")
+        
     print("Finalizamos esse nível!")
     time.sleep(2)
 # se a quantidade de acertos for menor que 4 enviamos uma mensagem positiva 
@@ -133,209 +124,15 @@ def easy():
         time.sleep(2)
         print("Você só teve", score, "acertos nas questões.")
         time.sleep(2)
-# desponibilizando a opção de o usuário jogar novamente este ou qualquer outro nivel
-        option = input(
-            "Gostaria de tentar novamente? Responda com sim ou não.").lower()
-        if option == "sim":
-            option1()
-        elif option == "não":
-            print("Ok")
-            time.sleep(2)
-            print("Bye bye :)")
-            print("")
+        start()
 # se a quantidade de acertos for maior que 4 enviamos uma mensagem positiva e deixamos disponivel a opção de jogar novamente 
     elif score > 4:
         print("Você é muito bom!")
         time.sleep(2)
         print("Você acertou", score, "questões.")
         time.sleep(2)
-        print("Temos dois outros níveis, gostaria de tentar?")
-        option3 = input(
-            "Você pode escolher entre nível 'médio' ou 'difícil'. Se você não quer continuar jogando escreva 'não'").lower()
-        if option3 == "médio":
-            medium()
-
-        elif option3 == "difícil":
-            hard()
-
-        elif option3 == "não":
-            time.sleep(2)
-            print("Ok! Bye bye :)")
-            print("")
+        start()
 # Os comentários da função easy() servem para as funções medium() e hard() sendo modificado apenas os valores necessários.
-
-def medium():
-    global score
-    score = 0
-    os.system("cls")
-
-    csvfile = open('medium.csv', 'r',  encoding='utf-8')
-
-    lines = csv.reader(csvfile, delimiter=',')
-
-    for q in lines:
-        question = q[0]
-        print('''
-        {}
-        '''.format(question))
-        posible_answers = (q[1], q[2], q[3], q[4],)
-        time.sleep(2)
-        print('''
-        {} 
-        {}
-        {}
-        {}
-        '''.format(posible_answers[0], posible_answers[1], posible_answers[2], posible_answers[3]))
-        answer = q[5]
-        user_answer = input("Qual é a resposta correta?").upper()
-        time.sleep(2)
-        print("A resposta correta é letra ", answer)
-        if user_answer == answer:
-            print("Você está indo bem!")
-            time.sleep(2)
-            score = score + 1
-            print("Até agora esses são seus pontos: ", score)
-            print("CARREGANDO....")
-            time.sleep(3)
-            os.system("cls")
-
-        else:
-            print("Infelizmente você errou :(")
-            time.sleep(2)
-            print("Esses são seus pontos: ", score)
-            time.sleep(2)
-            print("Vamos tentar novamente!")
-            time.sleep(2)
-            print("CARREGANDO....")
-            time.sleep(3)
-            os.system("cls")
-# when the user has answered all the questions the code determinds the users score
-    print("Finalizamos esse nível!")
-    time.sleep(2)
-# if it is below 4 it will print an 'encouraging' message
-    if score < 4:
-        print("Você precisa estudar um pouco mais :(")
-        time.sleep(2)
-        print("Seus pontos foram muito baixos.")
-        time.sleep(2)
-        print("Você só teve", score, "acertos nas questões.")
-        time.sleep(2)
-# the user will also get the option to play again
-        option = input(
-            "Gostaria de tentar novamente? Responda com sim ou não.").lower()
-        if option == "sim":
-            option1()
-
-        elif option == "não":
-            print("Ok")
-            time.sleep(2)
-            print("Bye bye :)")
-            print("")
-# if the user gets more than 4 they will get an actually encouraging message and will be asked if they want to play the other quiz
-    elif score > 4:
-        print("Você é muito bom!")
-        time.sleep(2)
-        print("Você acertou", score, "questões.")
-        time.sleep(2)
-        print("Temos dois outros níveis, gostaria de tentar?")
-        option3 = input(
-            "Você pode escolher entre nível 'fácil' ou 'difícil'. Se você não quer continuar jogando escreva 'não'").lower()
-        if option3 == "fácil":
-            easy()
-
-        elif option3 == "difícil":
-            hard()
-
-        elif option3 == "não":
-            time.sleep(2)
-            print("Ok! Bye bye :)")
-            print("")
-
-
-def hard():
-    global score
-    score = 0
-
-    csvfile = open('hard.csv', 'r', encoding='utf-8')
-
-    lines = csv.reader(csvfile, delimiter=',')
-    for q in lines:
-        question = q[0]
-        print('''
-        {}
-        '''.format(question))
-        posible_answers = (q[1], q[2], q[3], q[4],)
-        time.sleep(2)
-        print('''
-        {} 
-        {}
-        {}
-        {}
-        '''.format(posible_answers[0], posible_answers[1], posible_answers[2], posible_answers[3]))
-        answer = q[5]
-        user_answer = input("Qual é a resposta correta?").upper()
-        time.sleep(2)
-        print("A resposta correta é letra ", answer)
-        if user_answer == answer:
-            print("Você está indo bem!")
-            time.sleep(2)
-            score = score + 1
-            print("Até agora esses são seus pontos: ", score)
-            print("CARREGANDO....")
-            time.sleep(3)
-            os.system("cls")
-
-        else:
-            print("Infelizmente você errou :(")
-            time.sleep(2)
-            print("Esses são seus pontos: ", score)
-            time.sleep(2)
-            print("Vamos tentar novamente!")
-            time.sleep(2)
-            print("CARREGANDO....")
-            time.sleep(3)
-            os.system("cls")
-# when the user has answered all the questions the code determinds the users score
-    print("Finalizamos esse nível!")
-    time.sleep(2)
-# if it is below 4 it will print an 'encouraging' message
-    if score < 4:
-        print("Vocêprecisa estudar um pouco mais :(")
-        time.sleep(2)
-        print("Seus pontos foram muito baixos.")
-        time.sleep(2)
-        print("Você só teve", score, "acertos nas questões.")
-        time.sleep(2)
-# the user will also get the option to play again
-        option = input(
-            "Gostaria de tentar novamente? Responda com sim ou não.").lower()
-        if option == "sim":
-            option1()
-
-        elif option == "não":
-            print("Ok")
-            time.sleep(2)
-            print("Bye bye :)")
-            print("")
-# if the user gets more than 4 they will get an actually encouraging message and will be asked if they want to play the other quiz
-    elif score > 4:
-        print("Você é muito bom!")
-        time.sleep(2)
-        print("Você acertou", score, "questões.")
-        time.sleep(2)
-        print("Temos dois outros níveis, gostaria de tentar?")
-        option3 = input(
-            "Você pode escolher entre nível 'fácil' ou 'médio'. Se você não quer continuar jogando escreva 'não'").lower()
-        if option3 == "fácil":
-            easy()
-
-        elif option3 == "médio":
-            medium()
-
-        elif option3 == "não":
-            time.sleep(2)
-            print("Ok! Bye bye :)")
-            print("")
 
 # Função para adicionar pergunta
 def addQuestions(): 
